@@ -154,3 +154,20 @@ db.users.updateOne({email:"bikash@gmail.com"},{$set:{name:"Bikash",role:"admin"}
 
 ## products
 - _id,title,slug,category,brand,description,price,discount,images,seller,status,createdBy,updatedBy,createdAt,updatedAt
+
+
+
+
+## git 
+- git init
+- git add .
+- git commit -m "first commit"
+- git remote add origin https://github.com/username/repository.git
+- git push -u origin master
+- git branch -M main
+- git push -u origin main
+- git branch -a
+- git checkout -b feature/new-feature
+- git checkout main
+- git merge feature/new-feature
+- git branch -d feature/new-feature
