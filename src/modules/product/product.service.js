@@ -9,6 +9,9 @@ class ProductService{
             let data=req.body;
 
             let images=[];
+            if(productData.images){
+                images=[...productData.images]
+            }
 
 
             if(req.files){
@@ -36,6 +39,9 @@ class ProductService{
             }
 
             data.seller=data.seller&&data.seller!==''?data.seller:req.authUser._id;
+
+            //ruppees=>paisa
+            data.price=data.price*100;
 
             data.actualAmt=data.price - data.price*data.discount/100
             
@@ -79,6 +85,8 @@ class ProductService{
             }
 
             data.seller=data.seller&&data.seller!==''?data.seller:req.authUser._id;
+
+            data.price=data.price*100;
 
             data.actualAmt=data.price - data.price*data.discount/100
             

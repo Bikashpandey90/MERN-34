@@ -1,3 +1,4 @@
+const productSvc = require("../product/product.service");
 const categorySvc = require("./category.service");
 
 class CategoryController{
@@ -145,6 +146,64 @@ class CategoryController{
                 options:null
             })
 
+
+        }catch(exception){
+            next(exception);
+        }
+    }
+    getDetailBySlug=async(req,res,next)=>{
+        try{
+            const categoryDetail=await categorySvc.getSingleByFilter({
+                slug:req.params.slug
+            })
+
+            //products list
+
+            
+            let page=+req.query.page || 1;
+            let limit=+req.query.page ||10;
+            let skip=(page-1)*limit;
+
+            let filter={
+                category:categoryDetail._id,
+                status:'active'
+
+            };
+
+            if(req.query.search){
+                filter={
+                    ...filter,
+                    $or:[
+                        {title:new RegExp(req.query.search,'i')},
+                        {description:new RegExp(req.query.search,'i')},
+                        {status:new RegExp(req.query.search,'i')}
+                ]
+                }
+            }
+
+
+            let data=await productSvc.listAllProduct({
+                skip:skip,
+                limit:limit,
+                filter:filter
+            })
+            let totalCount = await productSvc.countData(filter)
+
+
+            res.json({
+                detail:{
+                    category:categoryDetail,
+                    products:data
+                },
+                message:"Category wise Product List",
+                status:"CATEGORY_WISE_LIST",
+                options:{
+                    currentPage:page,
+                    limit:limit,
+                    totalData:totalCount
+                }
+
+            })
 
         }catch(exception){
             next(exception);

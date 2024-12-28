@@ -8,6 +8,8 @@ const { brandCreateDTO, brandUpdateDTO } = require("./brand.validator");
 const brandRouter=require("express").Router();
 
 brandRouter.get('/home-brand',brandCtrl.getForHome)
+brandRouter.get('/:slug/by-slug',brandCtrl.getBySlug)
+
 
 //TODO: APT to get all the products by slug
 //brandRouter.get("/slug/:slug",brandCtrl.getProductList)

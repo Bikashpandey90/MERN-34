@@ -8,6 +8,7 @@ const { productCreateDTO, productUpdateDTO } = require("./product.validator");
 const productRouter=require("express").Router();
 
 productRouter.get('/home-product',productCtrl.getForHome)
+productRouter.get('/:slug/by-slug',productCtrl.getBySlug)
 
 productRouter.route('/')
           .post(checkLogin,allowRole(["admin","seller"]),uploader().array('images'),bodyValidator(productCreateDTO),productCtrl.store) // to create and store a product

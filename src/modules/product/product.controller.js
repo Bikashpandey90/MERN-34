@@ -132,9 +132,8 @@ class ProductController{
                 skip:0,
                 limit :10,
                 filter:{
-                    $and:[{ status:'active'},
-                        {startDate:{$lte:new Date()}},
-                        {endDate:{$gte:new Date()}}
+                    $and:[{ status:'active'}
+                       
                     ]
                 }
             })
@@ -149,6 +148,40 @@ class ProductController{
         }catch(exception){
             next(exception);
         }
+    }
+
+    getBySlug=async(req,res,next)=>{
+        try{
+            const slug=req.params.slug;
+            const productDetail=await productSvc.getSingleByFilter({
+                slug:slug
+            })
+
+
+            //related products logic
+            const listRelated=await productSvc.listAllProduct({
+                skip:0,
+                limit :8,
+                filter:{
+                    slug:{$ne:slug},
+                    category:productDetail.category
+                }
+            })
+            res.json({
+                detail:{
+                    product:productDetail,
+                    related:listRelated
+                },
+                message:"Product Detail",
+                status:"PRODUCT_DETAIL_SUCCESS",
+                options:null
+            })
+
+            
+        }catch(exception){
+            next(exception);
+        }
+
     }
 }
 

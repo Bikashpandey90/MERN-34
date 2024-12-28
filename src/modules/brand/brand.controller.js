@@ -1,3 +1,4 @@
+const productSvc = require("../product/product.service");
 const brandSvc = require("./brand.service");
 
 class BrandController{
@@ -145,6 +146,69 @@ class BrandController{
                 options:null
             })
 
+
+        }catch(exception){
+            next(exception);
+        }
+    }
+
+    getBySlug=async(req,res,next)=>{
+        try{
+            const brandDetail=await brandSvc.getSingleByFilter({
+                slug:req.params.slug
+            })
+
+            //products list
+
+            
+            let page=+req.query.page || 1;
+            let limit=+req.query.page ||10;
+            let skip=(page-1)*limit;
+
+            let filter={
+                brand:brandDetail._id,
+                status:'active'
+
+            };
+
+            if(req.query.search){
+                filter={
+                    ...filter,
+                    $or:[
+                        {title:new RegExp(req.query.search,'i')},
+                        {description:new RegExp(req.query.search,'i')},
+                        {status:new RegExp(req.query.search,'i')}
+                ]
+                }
+            }
+
+
+            let data=await productSvc.listAllProduct({
+                skip:skip,
+                limit:limit,
+                filter:filter
+            })
+            let totalCount = await productSvc.countData(filter)
+
+
+            res.json({
+                detail:{
+                    brand:brandDetail,
+                    products:data
+                },
+                message:"Brand wise Product List",
+                status:"BRAND_WISE_LIST",
+                options:{
+                    currentPage:page,
+                    limit:limit,
+                    totalData:totalCount
+                }
+
+            })
+
+
+
+            
 
         }catch(exception){
             next(exception);

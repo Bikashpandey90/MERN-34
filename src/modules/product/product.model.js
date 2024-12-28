@@ -1,6 +1,6 @@
 const mongoose=require("mongoose");
 const { commonStr, schemaOpts } = require("../../common/schema");
-const { required, Number } = require("joi");
+const { required, Number:JoiNumber } = require("joi");
 const ProductSchema=new mongoose.Schema({
    title:{
     type:String,
@@ -49,10 +49,10 @@ const ProductSchema=new mongoose.Schema({
       default:null
       
    },
-   images:{
+   images:[{
     type:String
   
-   },
+   }],
    ...commonStr
 
 },schemaOpts);
