@@ -1,4 +1,18 @@
+
 const express=require("express");
+const cors=require("cors");
+
+// //events
+// const EventsEmitter=require("events");
+// const myEvent=new EventsEmitter();
+// myEvent.emit("event","Data");
+// myEvent.on('event',(data)=>{
+//     //handle
+//     console.log(data)
+// })
+
+
+
 //load mongo db
 require("./db.config");
 
@@ -6,6 +20,7 @@ require("./db.config");
 const apiRouter=require("../router/router");
 
 const app=express();
+app.use(cors());
 
 
 //body parser
@@ -36,10 +51,13 @@ app.use((req,res,next)=>{
 //error handling middleware
 
 app.use((error,req,res,next)=>{
-    let code=error.code||500;
+    let code=+error.code||500;
     let detail=error.detail||{};
     let message=error.message||"Internal Sever Error"
     let status=error.status||"INTERNAL_SERVER_ERROR"
+
+    
+
 
     //uniqueness validation failed
     if(+error.code===11000){

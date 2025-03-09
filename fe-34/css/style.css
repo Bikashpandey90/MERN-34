@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+.container {
+    padding: 20px;
+}
+.post {
+    background-color: #fff;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.post img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+.post h3 {
+    margin: 10px 0 5px;
+    color: #333;
+}
+.post p {
+    color: #555;
+}
+.post .details {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #888;
+}

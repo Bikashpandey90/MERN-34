@@ -4,7 +4,8 @@ const brcypt = require("bcryptjs");
 const emailSvc = require("../../services/mail.service");
 const { randomStringGenerator } = require("../../utilities/helpers");
 const authSvc = require("./auth.service")
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const bannerSvc = require("../banners/banner.service");
 class AuthController{
     
     register=async (req,res,next)=>{
@@ -113,6 +114,7 @@ class AuthController{
             const data=req.body;
             const user=await authSvc.getSingleUserByFilter({
                 email:data.email,
+               
             })
 
             //active
@@ -210,7 +212,37 @@ class AuthController{
         }catch(exception){
             next("getRefreshToken :",exception)
         }
-    }   
+    } 
+
+    // sendResetOTP=async(req,res,next)=>{
+    //     try{
+    //         let email=req.body.email
+
+            
+    //     }catch(exception){
+    //         next(exception)
+    //     }
+    // }
+    
+    delete=async(req,res,next)=>{
+        try{
+            const data=await authSvc.getSingleUserByFilter({
+                _id:req.params.id
+            })
+            const response=await authSvc.deleteByFilter({
+                _id:req.params.id
+            })
+            res.json({
+                detail:response,
+                message:"User Deleted",
+                status:"USER_DELETED",
+                options:null
+
+            })
+        }catch(exception){
+            console.log(exception)
+        }
+    }
 }
 const authCtrl=new AuthController()
 module.exports=authCtrl

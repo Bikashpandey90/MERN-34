@@ -8,6 +8,7 @@ const { categoryCreateDTO, categoryUpdateDTO } = require("./category.validator")
 const categoryRouter=require("express").Router();
 
 categoryRouter.get('/home-category',categoryCtrl.getForHome)
+categoryRouter.get('/home-parent-category',categoryCtrl.getParentCategory)
 categoryRouter.get('/:slug/by-slug',categoryCtrl.getDetailBySlug)
 
 //TODO: APT to get all the products by slug

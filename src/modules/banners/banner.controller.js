@@ -28,17 +28,18 @@ class BannerController{
             //per page:10 data=>pages=10
 
             let page=+req.query.page || 1;
-            let limit=+req.query.page ||10;
+            let limit=+req.query.limit ||10;
             let skip=(page-1)*limit;
 
             let filter={};
 
             if(req.query.search){
-                filter={
-                    $or:[{title:new RegExp(req.query.search,'i')},
-                    {status:new RegExp(req.query.search,'i')}]
+                filter.$or=[
+                    {title:new RegExp(req.query.search,'i')},
+                    {status:new RegExp(req.query.search,'i')}
+                ]
                 }
-            }
+            
 
 
             let data=await bannerSvc.listAllBanner({skip,limit,filter})

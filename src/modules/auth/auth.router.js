@@ -1,5 +1,5 @@
 
-const authRouter=require("express").Router();
+const authRouter = require("express").Router();
 const { checkRefreshToken, checkLogin } = require("../../middlewares/auth.middleware");
 const { bodyValidator } = require("../../middlewares/bodyvalidator.middleware");
 const uploader = require("../../middlewares/multipart-parser.middleware");
@@ -20,26 +20,26 @@ const { registerDataDTO, loginDTO, activationDTO } = require("./auth.validator")
 
 
 //Modules -> feature
- // ecommerce=>
-    //MVP(minimal viable feature)only with core feature
-    //auth and authorization
-    //multi vendor/single vendor
-    //orders
-    //product
-    //brand
-    //category
-    //transactions
-    //banners
-    //chat implementation(socket)
+// ecommerce=>
+//MVP(minimal viable feature)only with core feature
+//auth and authorization
+//multi vendor/single vendor
+//orders
+//product
+//brand
+//category
+//transactions
+//banners
+//chat implementation(socket)
 
 /// add-ons features
-    //reviews
-    //offers/coupons/vouchers
-    //logistics
-    //inventory
-    //customer support
+//reviews
+//offers/coupons/vouchers
+//logistics
+//inventory
+//customer support
 
-    
+
 
 // app.get('/url',(req,res,<next>)=>{},(req,res,<next>)=>{})
 // app.post('/url',(req,res)=>{})
@@ -52,30 +52,35 @@ const { registerDataDTO, loginDTO, activationDTO } = require("./auth.validator")
 ///register
 //method:post
 //response: json =>message=>your account has been registered
-authRouter.post('/register',uploader().single('image'),bodyValidator(registerDataDTO),authCtrl.register)
+authRouter.post('/register', uploader().single('image'), bodyValidator(registerDataDTO), authCtrl.register)
 
 //activate
-authRouter.post('/activate',bodyValidator(activationDTO),authCtrl.activateUser)
-authRouter.post('/resend-otp',bodyValidator(activationDTO),authCtrl.resendOtp)
+authRouter.post('/activate', bodyValidator(activationDTO), authCtrl.activateUser)
+authRouter.post('/resend-otp', bodyValidator(activationDTO), authCtrl.resendOtp)
+// authRouter.post('/forget-password',bodyValidator(forgetPasswordDTO),authCtrl.sendResetOTP)
+
 
 
 // /login
 //method:post
 //response:json=>message=>your account has been logged in
 
-authRouter.post('/login',bodyValidator(loginDTO),authCtrl.login)
+authRouter.post('/login', bodyValidator(loginDTO), authCtrl.login)
 
 // /me
 //method:get
 //response:json=>data : a user object with name,email,address,id,password(a random text),role
-    //message=>your account information
+//message=>your account information
 
-    authRouter.get('/me',checkLogin,authCtrl.getLoggedInUser) //add checkLogin before authCtrl
-    authRouter.get('/refresh',checkRefreshToken,authCtrl.getRefreshToken)
+authRouter.get('/me', checkLogin, authCtrl.getLoggedInUser) //add checkLogin before authCtrl
+authRouter.get('/refresh', checkRefreshToken, authCtrl.getRefreshToken)
 
- 
+authRouter.route('/:id')
+    .delete(checkLogin, allowRole('admin'), authCtrl.delete)
 
 
 
 
-module.exports=authRouter
+
+
+module.exports = authRouter

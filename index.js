@@ -13,20 +13,41 @@
 //     }
 // });
 
+const http = require("http");
+const app = require("./src/config/express.config")
+//socket server
+const { Server } = require("socket.io");
+const { prototype } = require("events");
+
+const httpServer = http.createServer(app);
+const io = new Server(httpServer, {
+    cors: "*"
+});
 
 
+//on is event listener
+io.on('connection', (socket) => {
+    // console.log("Socket",socket.id)
 
-const http=require("http");
-const app= require("./src/config/express.config")
-const httpServer=http.createServer(app);
-httpServer.listen(9005,'127.0.0.1',(errr)=>{
-    if(!errr){
-        console.log("Server is running on port",9005)
+    io.emit("connected", { id: socket.id })
+    //  socket.emit("connected",{id:socket.id})
+
+    socket.on('newMessage', (data) => {
+        socket.broadcast.emit("messageReceived", data)
+    })
+});
+// io.emit();
+
+
+const port = process.env.PORT || 9005;
+httpServer.listen(port, (errr) => {                          //'192.168.0.110'
+    if (!errr) {
+        console.log("Server is running on port", port)
         console.log("Press ctrl+c to disconnect");
     }
 
 });
 
-httpServer.on("error",(err)=>{
+httpServer.on("error", (err) => {
 
 });

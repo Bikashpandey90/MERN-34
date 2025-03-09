@@ -34,6 +34,10 @@ const registerDataDTO=Joi.object({
         email:Joi.string().email().required(),
         otp:Joi.string().min(6).max(6).required()
     })
+    // const forgetPasswordDTO=Joi.object({
+    //     email:Joi.string().email().required()
+    // })
+   
     
     
 
