@@ -39,7 +39,7 @@ io.on('connection', (socket) => {
 // io.emit();
 
 
-const port = process.env.PORT || 9005;
+const port = process.env.PORT || 4000;
 httpServer.listen(port, (errr) => {                          //'192.168.0.110'
     if (!errr) {
         console.log("Server is running on port", port)
