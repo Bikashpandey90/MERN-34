@@ -5,18 +5,18 @@ const { allowRole } = require("../../middlewares/rbac.middleware");
 const bannerCtrl = require("./banner.controller");
 const { bannerCreateDTO, bannerUpdateDTO } = require("./banner.validator");
 
-const bannerRouter=require("express").Router();
+const bannerRouter = require("express").Router();
 
-bannerRouter.get('/home-banner',bannerCtrl.getForHome)
+bannerRouter.get('/home-banner', bannerCtrl.getForHome)
 
 bannerRouter.route('/')
-          .post(checkLogin,allowRole("admin"),uploader().single('image'),bodyValidator(bannerCreateDTO),bannerCtrl.store) // to create and store a banner
-          .get(checkLogin,allowRole("admin"),bannerCtrl.index)
+    .post(checkLogin, allowRole("admin"), uploader().single('image'), bodyValidator(bannerCreateDTO), bannerCtrl.store) // to create and store a banner
+    .get(checkLogin, allowRole("admin"), bannerCtrl.index)
 
 bannerRouter.route('/:id')
-          .get(checkLogin,allowRole('admin'),bannerCtrl.detail)
-          .patch(checkLogin,allowRole('admin'),uploader().single('image'),bodyValidator(bannerUpdateDTO),bannerCtrl.update) // to update a banner
-          .delete(checkLogin,allowRole('admin'),bannerCtrl.delete) // to delete a banner
+    .get(checkLogin, allowRole('admin'), bannerCtrl.detail)
+    .patch(checkLogin, allowRole('admin'), uploader().single('image'), bodyValidator(bannerUpdateDTO), bannerCtrl.update) // to update a banner
+    .delete(checkLogin, allowRole('admin'), bannerCtrl.delete) // to delete a banner
 
 //CRUD
 //CREATE
@@ -31,4 +31,4 @@ bannerRouter.route('/:id')
 //        .put()
 //        .delete()
 
-module.exports=bannerRouter
+module.exports = bannerRouter

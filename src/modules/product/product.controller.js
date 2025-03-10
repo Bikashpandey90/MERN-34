@@ -64,6 +64,8 @@ class ProductController {
         }
     }
 
+
+
     detail = async (req, res, next) => {
         try {
             const id = req.params.id;
@@ -135,6 +137,14 @@ class ProductController {
             let skip = (page - 1) * limit;
 
             let filter = { $and: [{ status: 'active' }] };
+            if (req.query.search) {
+                filter.$or = [
+                    { title: new RegExp(req.query.search, 'i') },
+                    { description: new RegExp(req.query.search, 'i') },
+                    { slug: new RegExp(req.query.search, 'i') }
+
+                ]
+            }
             const listProduct = await productSvc.listAllProduct({ skip, limit, filter })
             res.json({
                 detail: listProduct,
