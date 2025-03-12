@@ -350,7 +350,7 @@ class OrderController {
             })
             res.json({
                 detail: orderDetail,
-                message: "list of orders",
+                message: "Order Detail",
                 status: "LIST_ORDER_SUCCESSFULLY",
                 options: null
             })
