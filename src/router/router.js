@@ -8,6 +8,7 @@ const chatRouter = require('../modules/chat/chat.router');
 const microRouter = require('../modules/micro-services/micro.router');
 const orderRouter = require('../modules/order/order.router');
 const productRouter = require('../modules/product/product.router');
+const wishListRouter = require('../modules/wishlist/wishlist.router');
 
 
 
@@ -19,6 +20,7 @@ router.use('/product', productRouter)
 router.use('/order', orderRouter)
 router.use('/chat', chatRouter)
 router.use("/micro", microRouter)
+router.use('/wishlist', wishListRouter)
 
 
 

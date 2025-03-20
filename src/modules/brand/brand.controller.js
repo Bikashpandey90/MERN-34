@@ -131,7 +131,7 @@ class BrandController {
         try {
             const listBrand = await brandSvc.listAllBrand({
                 skip: 0,
-                limit: 10,
+                limit: +req.query.limit || 10,
                 filter: {
                     $and: [{ status: 'active' }]
                 }

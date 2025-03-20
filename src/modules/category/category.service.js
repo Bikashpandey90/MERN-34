@@ -94,6 +94,7 @@ class CategoryService{
                           .populate("parentId",["_id","title","slug"])
                           .populate("createdBy",["_id","name","email","status"])
                           .populate("updatedBy",["_id","name","email","status"]);
+                          
         if(!data){
             throw {code:404,message:"Category does not exist",status:"BANNER_NOT_FOUND"}
         }

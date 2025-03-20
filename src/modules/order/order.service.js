@@ -59,6 +59,7 @@ class OrderService {
         try {
             let data = await OrderModel.find(filter)
                 .populate("buyer", ['_id', 'name', 'email', 'phone'])
+                .sort({ createdAt: -1 });
 
             return data;
 
