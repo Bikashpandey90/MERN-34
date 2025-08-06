@@ -1,67 +1,77 @@
-const mongoose=require("mongoose");
+const mongoose = require("mongoose");
 const { commonStr, schemaOpts } = require("../../common/schema");
-const { required, Number:JoiNumber } = require("joi");
-const ProductSchema=new mongoose.Schema({
-   title:{
-    type:String,
-    min:3,
-    max:100,
-    required:true
+const { required, Number: JoiNumber } = require("joi");
+const ProductSchema = new mongoose.Schema({
+   title: {
+      type: String,
+      min: 3,
+      max: 100,
+      required: true
    },
-   slug:{
-    type:String,
-    unique:true,
-    required:true
+   slug: {
+      type: String,
+      unique: true,
+      required: true
    },
-   category:[{
-      type:mongoose.Types.ObjectId,
-      ref:"Category",
-      required:true
+   category: [{
+      type: mongoose.Types.ObjectId,
+      ref: "Category",
+      required: true
 
    }],
-   brand:{
-      type:mongoose.Types.ObjectId,
-      ref:"Brand",
-      default:null
+   brand: {
+      type: mongoose.Types.ObjectId,
+      ref: "Brand",
+      default: null
 
    },
-   price:{
-      type:Number,
-      required:true,
-      min:100
+   price: {
+      type: Number,
+      required: true,
+      min: 100
    },
-   discount:{
-      type:Number,
-      min:0,
-      max:100
+   discount: {
+      type: Number,
+      min: 0,
+      max: 100
    },
-   actualAmt:{
-      type:Number,
-      required:true
+   actualAmt: {
+      type: Number,
+      required: true
    },
-   stock:{
-      type:Number,
-      required:true
+   stock: {
+      type: Number,
+      required: true
    },
-   description:{
-      type:String
+   description: {
+      type: String
 
    },
-   seller:{
-      type:mongoose.Schema.Types.ObjectId,
-      ref:"User",
-      default:null
-      
+   seller: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null
+
    },
-   images:[{
-    type:String
-  
+   images: [{
+      type: String
+
    }],
+   minOrderQuantity: {
+      type: Number,
+      default: 1
+   },
+   discountOnQuantity: {
+      type: Number,
+      min: 0,
+      max: 100,
+      default: 0
+   },
    ...commonStr
 
-},schemaOpts);
-const ProductModel=mongoose.model("Product",ProductSchema)   //collection name(table)=> Products
+}, schemaOpts);
+const ProductModel = mongoose.model("Product", ProductSchema)   //collection name(table)=> Products
 
 
 
-module.exports=ProductModel
+module.exports = ProductModel

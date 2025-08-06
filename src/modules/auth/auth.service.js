@@ -209,6 +209,18 @@ class AuthService {
             throw exception
         }
     }
+    updateMyProfile = async (data) => {
+        try {
+            const response = await UserModel.findByIdAndUpdate(
+                data._id,
+                { $set: data },
+                { new: true })
+            return response
+
+        } catch (exception) {
+            throw exception
+        }
+    }
 
 }
 const authSvc = new AuthService()

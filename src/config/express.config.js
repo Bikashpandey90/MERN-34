@@ -1,6 +1,6 @@
 
-const express=require("express");
-const cors=require("cors");
+const express = require("express");
+const cors = require("cors");
 
 // //events
 // const EventsEmitter=require("events");
@@ -17,9 +17,9 @@ const cors=require("cors");
 require("./db.config");
 
 //import router
-const apiRouter=require("../router/router");
+const apiRouter = require("../router/router");
 
-const app=express();
+const app = express();
 app.use(cors());
 
 
@@ -27,64 +27,64 @@ app.use(cors());
 app.use(express.json())//json parser
 app.use(express.urlencoded(
     {
-        extended:false
+        extended: false
     }
 ))
 
 //router mount
 //app.use(apiRouter)
-app.use((req,res,next)=>{
+app.use((req, res, next) => {
     next()
 })
 
 //versioning
-app.use('/api/v1',apiRouter)
+app.use('/api/v1', apiRouter)
 // app.use("api/v2",apiRouter)
 
 
 
-app.use((req,res,next)=>{
-    next({code:404,message:"Not found",status:"NOT_FOUND"});
+app.use((req, res, next) => {
+    next({ code: 404, message: "Not found", status: "NOT_FOUND" });
 
-    
+
 })
 //error handling middleware
 
-app.use((error,req,res,next)=>{
-    let code=+error.code||500;
-    let detail=error.detail||{};
-    let message=error.message||"Internal Sever Error"
-    let status=error.status||"INTERNAL_SERVER_ERROR"
+app.use((error, req, res, next) => {
+    let code = +error.code || 500;
+    let detail = error.detail || {};
+    let message = error.message || "Internal Sever Error"
+    let status = error.status || "INTERNAL_SERVER_ERROR"
 
-    
+
 
 
     //uniqueness validation failed
-    if(+error.code===11000){
-        code=400
+    if (+error.code === 11000) {
+        code = 400
         //{keyPattern:{email:1,name:1}}=>['email','name']
-        Object.keys(error.keyPattern).map((key)=>{
-            detail[key]=`${key} should be unique`
+        Object.keys(error.keyPattern).map((key) => {
+            detail[key] = `${key} should be unique`
 
         })
-        status="VALIDATION_FAILED"
-        message="Validation Failed"
+        status = "VALIDATION_FAILED"
+        message = "Validation Failed"
     }
-   
+
 
     console.log(error)
     res.status(code).json({
-        data:detail,
+        data: detail,
         message: message,
-        status:status,
-        options:null
+        status: status,
+        options: null
 
     })
-    
+
 
 
 })
 
 
 
-module.exports=app
+module.exports = app

@@ -5,7 +5,7 @@ const { bodyValidator } = require("../../middlewares/bodyvalidator.middleware");
 const uploader = require("../../middlewares/multipart-parser.middleware");
 const { allowRole } = require("../../middlewares/rbac.middleware");
 const authCtrl = require("./auth.controller");
-const { registerDataDTO, loginDTO, activationDTO } = require("./auth.validator");
+const { registerDataDTO, loginDTO, activationDTO, updateProfileDTO } = require("./auth.validator");
 
 
 
@@ -78,6 +78,7 @@ authRouter.get('/refresh', checkRefreshToken, authCtrl.getRefreshToken)
 authRouter.route('/:id')
     .delete(checkLogin, allowRole('admin'), authCtrl.delete)
 
+authRouter.patch('/update-profile', checkLogin, uploader().single('image'), bodyValidator(updateProfileDTO), authCtrl.updateProfile)
 
 
 

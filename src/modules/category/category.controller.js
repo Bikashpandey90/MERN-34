@@ -1,5 +1,6 @@
 const productSvc = require("../product/product.service");
 const categorySvc = require("./category.service");
+const mongoose = require("mongoose")
 
 class CategoryController {
     store = async (req, res, next) => {
@@ -175,8 +176,66 @@ class CategoryController {
             next(exception);
         }
     }
+    getChildrenCategory = async (req, res, next) => {
+        try {
+            const { id } = req.params
+            const { skip = 0, limit = 12 } = req.query
+
+            console.log(id)
+            const childrenCategory = await categorySvc.listAllCategory({
+                skip: +skip,
+                limit: +limit,
+                filter: {
+                    $and: [
+                        { status: 'active' },
+                        { parentId: id }
+
+                    ]
+                }
+
+            })
+            res.json({
+                detail: childrenCategory,
+                message: "Category List For Home Page",
+                status: "CHILD_CATEGORY_LIST_HOME_SUCCESS",
+                options: null
+
+            })
+
+        } catch (exception) {
+            next(exception);
+        }
+    }
     getDetailBySlug = async (req, res, next) => {
         try {
+            // getChildrenCategory = async (req, res, next) => {
+            //     try {
+            //         const { parentId } = req.params
+            //         const { skip = 0, limit = 12 } = req.query
+            //         const childrenCategory = await categorySvc.listAllCategory({
+            //             skip: +skip,
+            //             limit: +limit,
+            //             filter: {
+            //                 $and: [
+            //                     { status: 'active' },
+            //                     { parentId: parentId }
+
+            //                 ]
+            //             }
+
+            //         })
+            //         res.json({
+            //             detail: childrenCategory,
+            //             message: "Category List For Home Page",
+            //             status: "CHILD_CATEGORY_LIST_HOME_SUCCESS",
+            //             options: null
+
+            //         })
+
+            //     } catch (exception) {
+            //         next(exception);
+            //     }
+            // }
             const categoryDetail = await categorySvc.getSingleByFilter({
                 slug: req.params.slug
             })
@@ -233,6 +292,7 @@ class CategoryController {
             next(exception);
         }
     }
+
 }
 
 const categoryCtrl = new CategoryController()

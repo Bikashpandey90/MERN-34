@@ -9,7 +9,10 @@ const productCreateDTO = Joi.object({
     discount: Joi.number().min(0).max(100).optional().default(0),
     description: Joi.string().allow(null, '').optional().default(null),
     seller: Joi.string().allow(null, '').optional().default(null),
-    stock: Joi.number().required()
+    stock: Joi.number().required(),
+    minOrderQuantity: Joi.number().optional().default(1),
+    discountOnQuantity: Joi.number().min(0).max(100).optional().default(0)
+
 
 }).unknown()
 
@@ -22,7 +25,11 @@ const productUpdateDTO = Joi.object({
     discount: Joi.number().min(0).max(100).optional().default(0),
     description: Joi.string().allow(null, '').optional().default(null),
     seller: Joi.string().allow(null, '').optional().default(null),
-    stock: Joi.number().required()
+    stock: Joi.number().required(),
+    minOrderQuantity: Joi.number().optional().default(1),
+    discountOnQuantity: Joi.number().min(0).max(100).optional().default(0)
+
+
 
 }).unknown()
 module.exports = {

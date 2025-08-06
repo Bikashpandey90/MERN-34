@@ -110,6 +110,9 @@ class BannerController {
             const data = await bannerSvc.getSingleByFilter({
                 _id: req.params.id
             })
+            if (!data) {
+                throw new Error("Banner Not Found");
+            }
             const response = await bannerSvc.deleteByFilter({
                 _id: req.params.id
             })

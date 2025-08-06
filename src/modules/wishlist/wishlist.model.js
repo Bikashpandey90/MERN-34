@@ -1,4 +1,4 @@
-const { default: mongoose } = require("mongoose");
+const  mongoose = require("mongoose");
 const { schemaOpts } = require("../../common/schema");
 
 const WishListSchema = new mongoose.Schema({

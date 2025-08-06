@@ -12,10 +12,8 @@ const allowRole=(role)=>{
                 next()
             }else{
                 throw{code:403,message:"Access denied",status:"PERMISSION_DENIED"}
-
-                
+  
             }
-            
 
         }catch(exception){
             next(exception)

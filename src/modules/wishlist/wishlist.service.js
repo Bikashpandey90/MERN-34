@@ -35,9 +35,6 @@ class WishListService {
 
             return wishlist
 
-
-
-
         } catch (exception) {
             console.log("Wishlist getAllWishListByFilter", exception)
             throw exception

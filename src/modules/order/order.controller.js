@@ -23,6 +23,13 @@ class OrderController {
                 product: productId
             })
 
+            if (quantity < productDetail.minOrderQuantity) {
+                return res.status(400).json({
+                    message: `Minimum order quantity is ${productDetail.minOrderQuantity}`,
+                    status: "QUANTITY_TOO_LOW",
+                });
+            }
+
             let cart = null;
 
             if (exists) {
@@ -31,8 +38,11 @@ class OrderController {
                 const updateBody = {
                     quantity: qty,
                     price: productDetail.actualAmt,
-                    totalAmt: productDetail.actualAmt * qty
-
+                    // totalAmt: ((productDetail.actualAmt * qty) - (productDetail.discountOnQuantity ?? 0 * (qty - 1)))
+                    totalAmt: Array.from({ length: qty }).reduce((sum, _, i) => {
+                        const discount = i * productDetail.discountOnQuantity;
+                        return sum + productDetail.actualAmt * (1 - discount / 100);
+                    }, 0)
                 }
 
                 cart = await orderDetailSvc.updateSingleCart(exists._id, updateBody)
@@ -45,6 +55,7 @@ class OrderController {
                 })
 
 
+
             } else {
                 //new product to add in cart
                 let orderDetail = {
@@ -53,11 +64,19 @@ class OrderController {
                     product: productDetail._id,
                     price: productDetail.actualAmt,
                     quantity: quantity,
-                    totalAmt: (productDetail.actualAmt * quantity),
+                    // totalAmt: (productDetail.actualAmt * quantity),
+                    totalAmt: Array.from({ length: quantity }).reduce((sum, _, i) => {
+                        const discount = i * productDetail.discountOnQuantity;
+                        return sum + productDetail.actualAmt * (1 - discount / 100);
+                    }, 0),
                     status: "cart",
                     seller: productDetail?.seller?._id,
-                    createdBy: loggedInUser._id
+                    createdBy: loggedInUser._id,
+
                 }
+
+
+
                 cart = await orderDetailSvc.createCart(orderDetail)
                 res.json({
                     detail: cart,
@@ -182,7 +201,6 @@ class OrderController {
             let filter = {
                 _id: { $in: cartId },
                 orderId: null,
-
             }
             if (loggedInUser.role === 'customer') {
                 filter = {
